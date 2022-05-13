@@ -1,0 +1,27 @@
+{
+  "name": "social-media-backend",
+  "version": "1.0.0",
+  "description": "Backend Server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "signin": "nodemon routes/SignIn.js",
+    "signup": "nodemon routes/SignUp.js"
+  },
+  "author": "Fortune Alebiosu",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.15",
+    "sequelize": "^6.16.1",
+    "socket.io": "^4.4.1"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.4.1"
+  }
+}
