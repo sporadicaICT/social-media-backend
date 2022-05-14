@@ -1,0 +1,13 @@
+image:
+  file: .github/dockerfiles/Dockerfile.ubuntu-base
+  context: .github
+tasks:
+  - name: Initial setup
+    init: npm install && gp sync-done setup
+  - name: Server
+    init: gp sync-await setup
+    command: npm start
+vscode:
+  extensions:
+    - rangav.vscode-thunder-client
+    - ms-azuretools.vscode-docker

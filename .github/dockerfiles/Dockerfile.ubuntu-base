@@ -1,0 +1,19 @@
+FROM "gitpod/workspace-full"
+
+
+USER root
+RUN apt-get update && apt-get upgrade -y && apt-get install -y mysql-server
+ARG DB_USER="runner"
+ARG DB_PASSWORD="runner"
+ARG DB_NAME="social-media"
+ARG DB_HOST="localhost"
+RUN service mysql start
+RUN mysql -e 'CREATE USER `${DB_USER}`@`localhost` IDENTIFIED BY "${DB_PASSWORD}";'
+# https://dba.stackexchange.com/q/76788
+RUN mysql -e 'CREATE DATABASE IF NOT EXISTS `${DB_NAME}` CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;' -v
+RUN mysql -e 'GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE TEMPORARY TABLES, DROP, INDEX, ALTER, LOCK TABLES ON `${DB_NAME}`.* TO `${DB_USER}`@`${DB_HOST}`;'
+RUN service mysql stop
+# End.
+ARG USER='gitpod'
+ARG GROUP='gitpod'
+USER ${USER}
