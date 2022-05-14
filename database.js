@@ -1,9 +1,9 @@
 const { Sequelize } = require('sequelize');
 const {
-  database: { username, password },
+  database: { username, password, host },
 } = require("./config");
 const sequelize = new Sequelize("social_media", username, password, {
-  host: database.host,
+  host: host,
   dialect: "mysql",
 });
 
