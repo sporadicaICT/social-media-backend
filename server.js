@@ -19,9 +19,9 @@ const DeleteLikes = require('./controllers/DeleteLikes').DeleteLikes;
 
 const CheckFollowing = require('./controllers/CheckFollowing').CheckFollowing
 
+const Auth = require("./routes/Auth").Auth;
 const GetUsers = require('./routes/GetUsers').GetUsers;
 const GetUser = require('./routes/GetUser').GetUser;
-const SignIn = require('./routes/SignIn').SignIn
 const AddRepost = require('./controllers/AddRepost').AddRepost;
 const GetFeed = require('./routes/HomePageFeed').GetFeed
 const TopPosts = require('./routes/SearchPageFeed').TopPosts
@@ -37,7 +37,7 @@ app.use(bodyParser.json());
 app.use(cors());
 server.listen(PORT);
 
-app.post('/sign-in', (req, res)=>{ SignIn(req, res) }); 
+app.use("/auth", Auth);
 app.post('/addfollowing', (req, res) => { AddFollowing(req, res) });
 app.get('/getfollowing/:user_id', (req, res) => { GetFollowing(req, res) });
 app.get('/getfollowers', (req, res)=> { GetFollowers(req, res) });
