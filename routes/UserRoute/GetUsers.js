@@ -1,4 +1,4 @@
-const Users = require('../models/User').User;
+const Users = require('../../models/User').User;
 const { Op } = require('sequelize');
 
 const GetUsers = async(req, res) => {

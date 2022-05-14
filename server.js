@@ -12,6 +12,7 @@ const { GetFollowers } = require('./controllers/GetFollowers')
 const { DeleteFollowing } = require('./controllers/DeleteFollowing')
 const { AddPost } = require('./controllers/AddPost')
 const { GetPosts } = require('./controllers/GetPosts');
+const { UserRouter } = require("./routes/UserRoute");
 
 const AddLikes = require('./controllers/AddLikes').AddLikes;
 const DeleteLikes = require('./controllers/DeleteLikes').DeleteLikes;
@@ -20,7 +21,7 @@ const DeleteLikes = require('./controllers/DeleteLikes').DeleteLikes;
 const CheckFollowing = require('./controllers/CheckFollowing').CheckFollowing
 
 const Auth = require("./routes/Auth").Auth;
-const GetUsers = require('./routes/GetUsers').GetUsers;
+const GetUsers = require("./routes/UserRoute/GetUsers").GetUsers;
 const GetUser = require('./routes/GetUser').GetUser;
 const AddRepost = require('./controllers/AddRepost').AddRepost;
 const GetFeed = require('./routes/HomePageFeed').GetFeed
@@ -47,7 +48,7 @@ app.get('/checkfollowing/:user_id/:following', (req, res)=> CheckFollowing(req, 
 app.post('/addpost', (req, res)=> { AddPost(req, res) });
 app.get('/getposts/:id', (req, res)=> { GetPosts(req, res)})
 
-app.get('/user/:id', (req, res)=> { GetUser(req, res) })
+app.use("/user", UserRouter);
 app.get('/getusers/:text', (req, res)=> { GetUsers(req, res) })
 
 app.patch('/addlikes', (req, res)=> { AddLikes(req, res) })
