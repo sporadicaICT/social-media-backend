@@ -10,8 +10,8 @@ app.use(cors())
 app.listen(5001);
 
 
-//const { app } = require('../server');
-const { User } = require('../models/User');
+//const { app } = require('../../server');
+const { User } = require('../../models/User');
 const bcrypt = require('bcrypt');
 
 app.post('/sign-up', async(req, res)=> {
