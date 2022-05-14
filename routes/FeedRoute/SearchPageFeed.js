@@ -1,4 +1,4 @@
-const Post = require('../models/Post').Post;
+const Post = require('../../models/Post').Post;
 
 const TopPosts = async(req, res) => {
     await Post.findAll({

@@ -13,6 +13,7 @@ const { DeleteFollowing } = require('./controllers/DeleteFollowing')
 const { AddPost } = require('./controllers/AddPost')
 const { GetPosts } = require('./controllers/GetPosts');
 const { UserRouter } = require("./routes/UserRoute");
+const { FeedRouter } = require('./routes/Feed');
 
 const AddLikes = require('./controllers/AddLikes').AddLikes;
 const DeleteLikes = require('./controllers/DeleteLikes').DeleteLikes;
@@ -22,10 +23,7 @@ const CheckFollowing = require('./controllers/CheckFollowing').CheckFollowing
 
 const Auth = require("./routes/Auth").Auth;
 const GetUsers = require("./routes/UserRoute/GetUsers").GetUsers;
-const GetUser = require('./routes/GetUser').GetUser;
 const AddRepost = require('./controllers/AddRepost').AddRepost;
-const GetFeed = require('./routes/HomePageFeed').GetFeed
-const TopPosts = require('./routes/SearchPageFeed').TopPosts
 
 const PORT = process.env.PORT || 4000
 const app = express();
@@ -56,8 +54,7 @@ app.delete('/deletelikes', (req, res)=> { DeleteLikes(req, res) })
 
 app.post('/addrepost', (req, res)=> { AddRepost(req, res) })
 
-app.get('/feed/:username', (req, res)=> { GetFeed(req, res) })
-app.get('/topfeed', (req, res)=> TopPosts(req, res))
+app.use('/feed',FeedRouter);
 
 
 //Realtime Chat Service

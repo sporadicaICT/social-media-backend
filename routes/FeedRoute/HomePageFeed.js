@@ -1,6 +1,6 @@
 const { Op } = require('sequelize')
-const Post = require('../models/Post').Post;
-const Following = require('../models/Following').Following;
+const Post = require('../../models/Post').Post;
+const Following = require('../../models/Following').Following;
 
 const Feed = async(req, res) => {
     const { username } = req.params;
