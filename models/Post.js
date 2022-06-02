@@ -5,13 +5,12 @@ class Posts extends Model{}
 
 Posts.init({
     id:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(10),
         primaryKey: true,
         allowNull: false,
-        autoIncrement: true,
     },
     owner_id:{
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: false,
     },
     content: {
@@ -38,7 +37,7 @@ Posts.init({
         defaultValue: false
     },
     reposted_by: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: true
     }
 
