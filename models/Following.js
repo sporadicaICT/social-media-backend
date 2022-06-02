@@ -12,7 +12,7 @@ Following.init({
     user_id: {
         type: DataTypes.STRING,
     },
-    following_id: {
+    following: {
         type: DataTypes.STRING,
     }
 }, {
