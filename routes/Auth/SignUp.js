@@ -1,45 +1,70 @@
-//package imports
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-
-const app = express();
-
-app.use(bodyParser.json());
-app.use(cors())
-app.listen(5001);
-
-
-//const { app } = require('../../server');
 const { User } = require('../../models/User');
+const { Auth } = require('../../models/Auth');
+const { makeid } = require('../../functions');
 const bcrypt = require('bcrypt');
 
-app.post('/sign-up', async(req, res)=> {
-    const { name, username, email, password } = req.body;
-    let exists;
-    await User.findAll({
+const checkForExistingAccount = async (body) => {
+    const { email } = body;
+    const existingUsers = await Auth.count({
         where: {
-            email: email,
+            email: email
         }
-    }).then(users=>{
-        users.length === 0 ? exists = false: exists = true;
+    }).then(number => {
+        return number
     })
+
+    if (existingUsers === 0)
+        return false
+    else 
+        return true
+}
+
+const SignUp = async (req, res) => {
+    const { name, username, email, password } = req.body;
+    const accountExists = await checkForExistingAccount(req.body).then(number => { return number })
+    
+    
     if(!name || !email || !password) {
-        return res.status(400)
-    } else if(exists===true){
-        return res.status(409).json({ message: "Email already in use "})
-    } else {
-        await User.create({
+        return res.status(400).json({ code: 'Invalid entry/entries' })
+    } 
+    else if (!accountExists) {
+        const randomId = makeid(20);
+
+        const auth = await Auth.create({
+            email: email,
+            username: username,
+            user_id: randomId,
+            password: password,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        }).then(auth => {
+            return auth
+        })
+
+        const user = await User.create({
+            id: randomId,
             name: name,
             email: email,
             username: username,
             password: password,//bcrypt.hashSync(password, bcrypt.genSaltSync(5)),
             createdAt: new Date(),
             updatedAt: new Date(),
+        }).then(user => {
+            return user
         })
-        .then(user => {
-            res.json(user);
-            console.log(user);
-        })
+
+
+        Promise.all([auth, user]).then(details => {
+            res.send(details)
+        }) 
     }
-})
+    else {
+        res.json({ code: 'Email already in use!' })
+    }
+    
+    
+}
+
+module.exports = {
+    SignUp: SignUp
+}
