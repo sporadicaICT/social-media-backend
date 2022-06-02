@@ -1,20 +1,34 @@
 const { User } = require('../../models/User');
+const { Auth } = require('../../models/Auth')
 const bcrypt = require('bcrypt');
 
+const getUserDetails = async (res, id) => {
+    const userDetails = await User.findOne({
+        where: {
+            id: id
+        }
+    }).then(user => {
+        return res.json(user)
+    })
 
+    return userDetails
+}
 
 const SignIn = async(req, res)=> {
-    const { username, password } = req.body;
-    if(!username || !password){
+    const { email, password } = req.body;
+    if(!email || !password){
         return res.status(400).json({message:'No username or password provided'})
     } else {
-        await User.findOne({
+        await Auth.findOne({
             where: {
-                username: username,
+                email: email,
                 password: password
             }
-        }).then(async(user) => {
-            res.json(user)
+        }).then(auth => {
+            console.log(auth.dataValues)
+            getUserDetails(res, auth.dataValues.user_id)
+        })
+        
             /*
             bcrypt.compare(password, user.password, (err, result) => {
                 if (err) {
@@ -28,8 +42,7 @@ const SignIn = async(req, res)=> {
                     res.send("Wahala dey o")
                 }
             })*/
-            console.log(user.password)
-        })
+        
     }
 }
 
