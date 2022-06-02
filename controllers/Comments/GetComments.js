@@ -2,18 +2,25 @@ const { Comments } = require('../../models/Comments');
 
 const GetComments = async (req, res) => {
     //limit is an optional param
-    const { post_id, limit } = req.body;
+    const { limit } = req.body;
+    const { postid } = req.params;
 
-    await Comments.findAndCountAll({
-        where: {
-            post_id: post_id
-        },
-        limit: limit !== undefined ? limit : null
-    })
-    .then(res => res.json(res))
-    .catch(() => {
-        res.status(401).json({code: 'Error while getting comments'})
-    })
+    if(!postid){
+        res.status(400).json({ code: 'Bad request! No postid specified' })
+    } 
+    else {
+        await Comments.findAndCountAll({
+            where: {
+                post_id: postid
+            },
+            limit: limit !== undefined ? limit : null
+        })
+        .then(comments => res.status(200).json(comments))
+        .catch(() => {
+            res.status(500).json({code: 'Error while getting comments'})
+        })
+    }
+
 }
 
 
