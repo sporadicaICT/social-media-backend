@@ -1,0 +1,28 @@
+FROM "gitpod/workspace-full"
+
+
+USER root
+RUN apt-get update && apt-get upgrade -y && apt-get install -y mysql-server
+ARG DB_USER="runner"
+ARG DB_PASSWORD="runner"
+# Mysql only accepts _ as sep.
+ARG DB_NAME="social_media"
+ARG DB_HOST="localhost"
+RUN mkdir /nonexistent
+# Show databases and show user are just for easier logs. May be a security concern
+# https://raw.githubusercontent.com/saadismail/useful-bash-scripts/master/db.sh
+RUN service mysql start && \
+    mysql -e "CREATE USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASSWORD}';" && \
+# https://dba.stackexchange.com/q/76788
+    mysql -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME} /*\!40100 DEFAULT CHARACTER SET utf8 */;" && \
+    echo "Showing databases..." && \
+    mysql -e "SHOW DATABASES;" && \
+    mysql -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'${DB_HOST}';" && \
+    mysql -e "FLUSH PRIVILEGES;" && \
+    echo "Showing users..." && \
+    mysql -e "SELECT User from mysql.user;" && \
+    service mysql stop
+# End.
+ARG USER='gitpod'
+ARG GROUP='gitpod'
+USER ${USER}

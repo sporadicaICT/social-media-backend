@@ -1,0 +1,7 @@
+{
+  "database": {
+    "username": "runner",
+    "password": "runner",
+    "host": "localhost"
+  }
+}

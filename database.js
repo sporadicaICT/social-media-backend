@@ -1,7 +1,10 @@
 const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize('social-media','root','', {
-    host: 'localhost',
-    dialect: 'mysql',
+const {
+  database: { username, password, host },
+} = require("./config");
+const sequelize = new Sequelize("social_media", username, password, {
+  host: host,
+  dialect: "mysql",
 });
 
 module.exports = {
